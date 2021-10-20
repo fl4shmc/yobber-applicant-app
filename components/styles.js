@@ -35,10 +35,11 @@ export const PageLogo = styled.Image`
 
 export const SubTitle = styled.Text`
   font-size: 18px;
+  font-family: 'exo-light';
+  /* margin-top: 20px; */
   margin-bottom: 20px;
   letter-spacing: 1px;
-  font-weight: bold;
-  color: ${tertiary};
+  color: black;
 `;
 
 export const StyledFormArea = styled.View`
@@ -47,7 +48,6 @@ export const StyledFormArea = styled.View`
 
 export const StyledTextInput = styled.TextInput`
   background-color: ${secondary};
-  padding-left: 55px;
   padding-right: 55px;
   border-radius: 5px;
   font-size: 16px;
@@ -55,6 +55,12 @@ export const StyledTextInput = styled.TextInput`
   margin-top: 3px;
   margin-bottom: 10px;
   color: ${tertiary};
+
+  ${(props) =>
+    props.type != 'noicon' &&
+    `
+    padding-left: 55px;
+    `}
 `;
 
 export const StyledInputLabel = styled.Text`
