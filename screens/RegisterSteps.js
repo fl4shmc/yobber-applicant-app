@@ -24,10 +24,26 @@ import { Formik } from 'formik';
 import { Octicons, Ionicons } from '@expo/vector-icons';
 import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const { darklight } = Colours;
 
 const RegisterStepZero = () => {
+  const [show, setShow] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [dob, setDob] = useState();
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(false);
+    setDate(currentDate);
+    setDob(currentDate);
+  };
+
+  const showDatePicker = () => {
+    setShow(true);
+  };
+
   return (
     <View style={{ flex: 1, marginTop: 10 }}>
       <StyledContainer>
@@ -41,8 +57,18 @@ const RegisterStepZero = () => {
           <ProgressStep>
             <View style={{ alignItems: 'center' }}>
               <SubTitle>Let's take the details first!</SubTitle>
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode="date"
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
+                />
+              )}
               <Formik
-                initialValues={{ firstname: '', lastname: '' }}
+                initialValues={{ firstname: '', lastname: '', dateofbirth: '' }}
                 onSubmit={(values) => {
                   console.log(values);
                 }}
@@ -52,16 +78,46 @@ const RegisterStepZero = () => {
                     <MyTextInput
                       label="Firstname"
                       onChangeText={handleChange('firstname')}
-                      onBlur={handleBlur('email')}
-                      value={values.email}
-                      keyboardType="email-address"
+                      onBlur={handleBlur('firstname')}
+                      value={values.firstname}
+                      keyboardType="default"
                     />
                     <MyTextInput
                       label="Lastname"
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      value={values.email}
-                      keyboardType="email-address"
+                      onChangeText={handleChange('lastname')}
+                      onBlur={handleBlur('lastname')}
+                      value={values.lastname}
+                      keyboardType="default"
+                    />
+                    <MyTextInput
+                      label="Date of Birth"
+                      onChangeText={handleChange('dateofbirth')}
+                      onBlur={handleBlur('dateofbirth')}
+                      value={dob ? dob.toDateString() : ''}
+                      isDate={true}
+                      editable={false}
+                      showDatePicker={showDatePicker}
+                    />
+                    <MyTextInput
+                      label="Address"
+                      onChangeText={handleChange('address')}
+                      onBlur={handleBlur('address')}
+                      value={values.address}
+                      keyboardType="default"
+                    />
+                    <MyTextInput
+                      label="Postal Code"
+                      onChangeText={handleChange('postalcode')}
+                      onBlur={handleBlur('postalcode')}
+                      value={values.postalcode}
+                      keyboardType="default"
+                    />
+                    <MyTextInput
+                      label="Location"
+                      onChangeText={handleChange('location')}
+                      onBlur={handleBlur('location')}
+                      value={values.location}
+                      keyboardType="default"
                     />
                   </StyledFormArea>
                 )}
@@ -70,7 +126,7 @@ const RegisterStepZero = () => {
           </ProgressStep>
           <ProgressStep>
             <View style={{ alignItems: 'center' }}>
-              <Text>This is the content within step 2!</Text>
+              <Text>What type of job are you interested in?</Text>
             </View>
           </ProgressStep>
           <ProgressStep>
@@ -84,11 +140,16 @@ const RegisterStepZero = () => {
   );
 };
 
-const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
+const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, isDate, showDatePicker, ...props }) => {
   return (
     <View>
       <StyledInputLabel>{label}</StyledInputLabel>
-      <StyledTextInput type="noicon" {...props} />
+      {!isDate && <StyledTextInput type="noicon" {...props} />}
+      {isDate && (
+        <TouchableOpacity onPress={showDatePicker}>
+          <StyledTextInput type="noicon" {...props} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

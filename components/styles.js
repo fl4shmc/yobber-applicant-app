@@ -49,7 +49,8 @@ export const StyledFormArea = styled.View`
 export const StyledTextInput = styled.TextInput`
   background-color: ${secondary};
   padding-right: 55px;
-  border-radius: 5px;
+  padding-left: 10px;
+  border-radius: 10px;
   font-size: 16px;
   height: 50px;
   margin-top: 3px;
